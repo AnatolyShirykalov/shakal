@@ -1,0 +1,4 @@
+tmp/data.js
+*.swp
+node_modules
+bundle.js

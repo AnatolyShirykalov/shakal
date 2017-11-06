@@ -1,0 +1,31 @@
+.chip {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: black;
+}
+.chip::before {
+  content: attr(data-level);
+  margin: 5px;
+  color: white;
+}
+
+.chip.type-ship {
+  border-radius: 0;
+}
+
+.chip.owner-0 {background: red;}
+.chip.owner-1 {background: blue;}
+.chip.owner-2 {background: green;}
+.chip.owner-3 {background: violet;}
+
+.chip.selected {
+  border: 2px solid black;
+}
+
+.chip.type-coin {
+  background: gold;
+}
+

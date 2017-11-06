@@ -1,0 +1,51 @@
+.cell {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  margin: 2px 4px;
+  background-color: #eed;
+  background-repeat: no-repeat;
+  background-size: 50px 50px;
+  overflow: hidden;
+}
+
+.cell.achievable { border: 2px dashed black;}
+
+.water {
+  background-image: url('./water/noun_872538_cc.png');
+  background-color: #eef;
+}
+
+.arrow.level-8 {background-image: url('./arrow/noun_1245383_cc.svg');}
+.arrow.level-4 {background-image: url('./arrow/noun_1136352_cc.svg');}
+.arrow.level-4.direction-1 {background-image: url('./arrow/noun_969748_cc.svg'); }
+.arrow.level-2.direction-1 {background-image: url('./arrow/noun_1194642_cc.svg');}
+.arrow.level-2.direction-2 {background-image: url('./arrow/noun_788411_cc.svg');}
+.arrow.level-2.direction-0 {background-image: url('./arrow/noun_788412_cc.svg');}
+.arrow.level-2.direction-3 {background-image: url('./arrow/noun_1178646_cc.svg');}
+  .arrow.level-1.direction-0 {background-image: url('./arrow/noun_788400_cc.svg');}
+  .arrow.level-1.direction-1 {background-image: url('./arrow/noun_788406_cc.svg');}
+  .arrow.level-1.direction-2 {background-image: url('./arrow/noun_788402_cc.svg');}
+  .arrow.level-1.direction-3 {background-image: url('./arrow/noun_788404_cc.svg');}
+  .arrow.level-1.direction-4 {background-image: url('./arrow/noun_788399_cc.svg');}
+  .arrow.level-1.direction-5 {background-image: url('./arrow/noun_788403_cc.svg');}
+  .arrow.level-1.direction-6 {background-image: url('./arrow/noun_788401_cc.svg');}
+  .arrow.level-1.direction-7 {background-image: url('./arrow/noun_788405_cc.svg');}
+.treasure {background-image: url('./treasure/noun_1113616_cc.svg');}
+.horse {background-image: url('./horse/noun_1207083_cc.svg');}
+
+.marsh { background-image: url('./marsh/noun_34007_cc.svg');}
+.marsh::before{content: attr(data-level); margin-left: 30px;}
+.block.level-2 {background-image: url('./octopus/noun_1065939_cc.svg'); }
+.block.level-3 {background-image: url('./ship/noun_959890_cc.svg'); }
+.island {background-image: url('./island/noun_1052788_cc.svg'); }
+.star {background-image: url('./star/noun_156110_cc.svg');}
+.hedgehog {background-image: url('./hedgehog/noun_801557_cc.svg');}
+.donkey {background-image: url('./donkey/noun_1046595_cc.svg');}
+.friday {background-image: url('./friday/noun_1361458_cc.svg');}
+.vortex {background-image: url('./vortex/noun_29676_cc.svg');}
+.shark {background-image: url('./shark/noun_726899.svg');}
+.cell.closed{background: pink;}
+
+
