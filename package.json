@@ -7,8 +7,8 @@
     "start": "webpack-dev-server",
     "test": "mocha --require babel-core/register  --require ./test/test_helpers.js  --recursive"
   },
-  "author": "KRUNAL LATHIYA",
-  "license": "ISC",
+  "author": "Anatoly Shirykalov",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
