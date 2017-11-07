@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import Arrow from './Arrow'
+import Star from './Star'
 
 export default class Game {
   constructor(state, action) {
@@ -31,9 +32,12 @@ export default class Game {
     return Object.assign(chip, {opened: true, owner: this.player})
   }
 
-  // тотопить монеты
+  // тотопить монеты, съедать акулой
   wreck(chip, id) {
-    if ( !this.toCell.safe_for_coin && chip.type === 'coin' && _.includes(this.chipIds, id) )
+    const here = _.includes(this.chipIds, id);
+    const coinToSink = !this.toCell.safe_for_coin && chip.type === 'coin';
+    const onShark = this.toCell.type === 'shark';
+    if (here && (coinToSink || onShark))
       return Object.assign({}, chip, {sinked: true});
     return chip;
   }
@@ -114,6 +118,10 @@ export default class Game {
       player: this.player,
       results: this.newResults(),
     };
+    if (this.toCell.type === 'star' ) {
+      const argTo = new Star(this.toCell).mustMoveTo();
+      return new Game(ret, {chipIds: this.chipIds, to: argTo}).newState();
+    }
     if (this.toCell.type === 'hedgehog') {
       const chip = this.chips[_.find(this.chipIds, id=>this.chips[id].type !== 'coin')];
       return new Game(ret, {chipIds: this.chipIds, to: this.getHome(chip)}).newState();

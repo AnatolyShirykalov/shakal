@@ -47,5 +47,8 @@
 .vortex {background-image: url('./vortex/noun_29676_cc.svg');}
 .shark {background-image: url('./shark/noun_726899.svg');}
 .cell.closed{background: pink;}
+.star.direction-1 {transform: rotate(90deg);}
+.star.direction-2 {transform: rotate(180deg);}
+.star.direction-3 {transform: rotate(-90deg);}
 
 

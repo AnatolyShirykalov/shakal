@@ -6,7 +6,10 @@ var webpack = require('webpack');
 var CompressionPlugin = require("compression-webpack-plugin");
 var production = process.env.NODE_ENV === 'production';
 
-var plugins = []
+var plugins = [
+  new webpack.NamedModulesPlugin(),
+  new webpack.HotModuleReplacementPlugin()
+];
 
 if (production) {
   plugins = [
@@ -21,7 +24,10 @@ if (production) {
 }
 
 module.exports = {
-  entry: './src/main.js',
+  entry: [
+    'react-hot-loader/patch',
+    './src/main.js',
+  ],
   output: {
     filename: 'bundle.js'
   },
@@ -54,7 +60,8 @@ module.exports = {
   },
   plugins: plugins,
   devServer: {
-    port: 3000
+    port: 3000,
+    hot: true
   },
   devtool: 'source-map'
 };

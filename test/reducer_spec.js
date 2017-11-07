@@ -206,6 +206,13 @@ describe('reducers', () => {
         chai.assert(s4.desk[block.id].active, 'not active again');
       })
 
+      it('should sink on shark', () => {
+        const shark = _.find(desk, {type: 'shark'});
+        const state = game(initialState, {type: 'MOVE', chipIds: [1], to: shark.id});
+        chai.assert(state.chips[1].cell === shark.id);
+        chai.assert(state.chips[1].sinked, 'not sinked');
+      })
+
     });
 
     describe('SELECT', ()=> {

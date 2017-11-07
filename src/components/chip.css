@@ -28,4 +28,6 @@
 .chip.type-coin {
   background: gold;
 }
-
+.chip.sinked {
+  display: none;
+}

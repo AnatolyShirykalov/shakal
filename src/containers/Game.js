@@ -8,6 +8,8 @@ import './game.css'
 
 const mapStateToProps = ({game: {desk, chips, player, results}}) => {
   const selected = _.filter(chips, {selected: true});
+  const mustContinue = selected.length > 0 &&
+    _.includes(['arrow', 'horse'], desk[selected[0].cell].type);
   const sc = _.find(selected, {type: 'coin'});
   const ship = _.find(chips, {owner: player, type: 'ship'});
   const moves = selected.length > 0 ? Moves(selected[0], desk, ship) : [];
@@ -18,8 +20,19 @@ const mapStateToProps = ({game: {desk, chips, player, results}}) => {
       if (!cell.opened) return {id, objects: [], achievable};
       const objects = _.map(_.filter(chips,{cell: id}), (chip, id) => {
         return Object.assign({}, chip, {
-          selectable: (chip.owner === player && (!chip.selected || !sc) && chip.type !== 'coin') ||
-            (chip.type === 'coin' && selected.length > 0 && chip.cell === selected[0].cell && chip.level === selected.level && (chip.selected || !sc))
+          selectable: !mustContinue && (
+            (
+              chip.owner === player &&
+              (!chip.selected || !sc) &&
+              chip.type !== 'coin'
+            ) || (
+              chip.type === 'coin' &&
+              selected.length > 0 &&
+              chip.cell === selected[0].cell &&
+              chip.level === selected.level &&
+              (chip.selected || !sc)
+            )
+          )
         });
       });
       return Object.assign({}, cell, {objects, achievable});
