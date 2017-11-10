@@ -17,7 +17,7 @@ const mapStateToProps = ({server: {myPlayer, ok, pending}, game: {desk, chips, p
   const ship = _.find(chips, {owner: player, type: 'ship'});
   const moves = selected.length > 0 ? Moves(selected[0], desk, ship) : [];
   return {
-    selected, player, results, ok,
+    selected, player, results, ok, myPlayer,
     desk: desk.map((cell, id) => {
       const achievable = !pending && !!_.find(moves, {to: id});
       if (!cell.opened) return {id, objects: [], achievable};
@@ -52,8 +52,8 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const GameComponent = ({player, ok, selected, desk, results, mover, selector, initGame}) => {
-  if (!ok && typeof(player) !== 'number') return <div className="sorry">Ждём остальных</div>;
+const GameComponent = ({myPlayer, player, ok, selected, desk, results, mover, selector, initGame}) => {
+  if (!ok && typeof(player) !== 'number') return <div className="sorry">Чтобы начать игру, нужно открыть сию страницу в четырёх вкладках. После открытия четвёртой вкладки у первого открывшего появится волшебная кнопка. После нажатия кнопки сгенерируется поле и начнётся игра.</div>;
   if (!ok) return (
     <div className="push">
       <button onClick={initGame} >Создать игру</button>
@@ -75,7 +75,8 @@ const GameComponent = ({player, ok, selected, desk, results, mover, selector, in
   return (
     <div className="shakal">
       <div className="shakal-bar">
-        <div className={`bar-player player-${player}`} />
+        <div className={`bar-player player-${player}`} >Текущий</div>
+        <div className={`bar-player my-player player-${myPlayer}`} >Вы</div>
         <div className="results">
           {_.map(results, (result, pl) => {
             return (

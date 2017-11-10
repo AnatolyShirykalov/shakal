@@ -1,7 +1,7 @@
 var http = require('http');
 var server = http.createServer();
 var socket_io = require('socket.io');
-server.listen(3001);
+server.listen(1359);
 var io = socket_io();
 
 io.attach(server);
