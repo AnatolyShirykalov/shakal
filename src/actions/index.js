@@ -1,3 +1,5 @@
+import {initGame} from '../core'
+
 export const select = (field_id, object_id) => {
   return {
     type: 'SELECT',
@@ -14,3 +16,6 @@ export const move = (args) => {
   }
 }
 
+export const initGAME = () => {
+  return {type: 'server/initGame', game: initGame()}
+}

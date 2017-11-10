@@ -5,8 +5,11 @@ import Moves from '../core/Moves'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import './game.css'
+import * as actions from '../actions'
 
-const mapStateToProps = ({game: {desk, chips, player, results}}) => {
+const mapStateToProps = ({server: {myPlayer, ok, pending}, game: {desk, chips, player, results}}) => {
+  if (typeof(myPlayer) !== 'number') return {};
+  if (!ok) return {player: myPlayer === 0 ? 0 : false};
   const selected = _.filter(chips, {selected: true});
   const mustContinue = selected.length > 0 &&
     _.includes(['arrow', 'horse'], desk[selected[0].cell].type);
@@ -14,13 +17,13 @@ const mapStateToProps = ({game: {desk, chips, player, results}}) => {
   const ship = _.find(chips, {owner: player, type: 'ship'});
   const moves = selected.length > 0 ? Moves(selected[0], desk, ship) : [];
   return {
-    selected, player, results,
+    selected, player, results, ok,
     desk: desk.map((cell, id) => {
-      const achievable = !!_.find(moves, {to: id});
+      const achievable = !pending && !!_.find(moves, {to: id});
       if (!cell.opened) return {id, objects: [], achievable};
       const objects = _.map(_.filter(chips,{cell: id}), (chip, id) => {
         return Object.assign({}, chip, {
-          selectable: !mustContinue && (
+          selectable: !pending && !mustContinue && myPlayer === player && (
             (
               chip.owner === player &&
               (!chip.selected || !sc) &&
@@ -42,13 +45,20 @@ const mapStateToProps = ({game: {desk, chips, player, results}}) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    selector: id => dispatch({type: 'SELECT', id}),
-    mover: move => dispatch(Object.assign({}, move, {type: 'MOVE'}))
+    selector: id => dispatch({type: 'server/SELECT', id}),
+    mover: move => dispatch(Object.assign({}, move, {type: 'server/MOVE'})),
+    initGame: () => dispatch(actions.initGAME())
   }
 }
 
 
-const GameComponent = ({player, selected, desk, results, mover, selector}) => {
+const GameComponent = ({player, ok, selected, desk, results, mover, selector, initGame}) => {
+  if (!ok && typeof(player) !== 'number') return <div className="sorry">Ждём остальных</div>;
+  if (!ok) return (
+    <div className="push">
+      <button onClick={initGame} >Создать игру</button>
+    </div>
+  );
   const extraChipProps = chip => {
     if (chip.selectable) return {onClick: (e) => {
       e.stopPropagation();

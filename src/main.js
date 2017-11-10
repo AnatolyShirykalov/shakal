@@ -1,15 +1,21 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import { Provider } from 'react-redux'
 import Game from './containers/Game'
 import reducer from './reducer'
 import * as actions from './actions'
 import { AppContainer } from 'react-hot-loader'
+import createSocketIoMiddleware from 'redux-socket.io';
+import io from 'socket.io-client';
+const socket = io('http://localhost:3001');
+const socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
 const store = createStore(
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeWithDevTools(applyMiddleware(socketIoMiddleware))
+  //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
 
