@@ -26,14 +26,19 @@ export const game = (state = defaultState, action) => {
   return new Game(state, action).newState();
 };
 
-const server = (state = defaultServer, action) => {
-  const pending = false;
-  if (action.type.match(/^server/)) return Object.assign({}, state, {pending: true});
-  if (action.type === 'SET_PLAYER') return {myPlayer: action.data, ok: false};
-  if (action.type === 'initGame') return Object.assign({}, state, {ok: true, pending});
-  return Object.assign({}, state, {pending: false});
+const myPlayer = (state = null, action) => {
+  if (action.type === 'SET_PLAYER') return action.data;
+  return state;
 }
 
-const reducer = combineReducers({game, server});
+const server = (state = 'new', action) => {
+  if (action.type === 'server/page') return 'new';
+  if (action.type.match(/^server/)) return 'pending';
+  if (action.type === 'SET_PLAYER') return 'noDesk';
+  if (action.type === 'initGame') return 'ok';
+  return state;
+}
+
+const reducer = combineReducers({game, server, myPlayer});
 export default reducer;
 

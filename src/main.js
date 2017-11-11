@@ -9,8 +9,8 @@ import * as actions from './actions'
 import { AppContainer } from 'react-hot-loader'
 import createSocketIoMiddleware from 'redux-socket.io';
 import io from 'socket.io-client';
-//const socket = io('http://localhost:3001');
-const socket = io();
+const socket = io('http://localhost:1359');
+//const socket = io();
 const socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 
 const store = createStore(
@@ -19,6 +19,7 @@ const store = createStore(
   //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
+const page = window.location.search.slice(1).split('&').map(q=>q.split('=')).find(q=>q[0]==='page')[1];
 
 const r = () => {
   render(
@@ -28,7 +29,9 @@ const r = () => {
       </Provider>
     </AppContainer>,
     document.getElementById('root')
-  )
+  );
+  socket.emit('page', page);
+  //store.dispatch({type: 'server/page', data: page});
 }
 
 r();
