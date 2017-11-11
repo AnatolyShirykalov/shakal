@@ -31,6 +31,8 @@ const digits = (chip, desk, ship={}) => {
       validNeighbor(chip, desk)
     ), toId
   );
+  if (chip.type === 'ship')
+    return _.filter(ids(nonDiag), id=>!_.includes([0, 12, 168, 156], id));
   switch(desk[chip.cell].type) {
     case 'arrow':
       return new Arrow(desk[chip.cell]).canMoveTo();

@@ -100,4 +100,14 @@ describe('Moves', () => {
     const moves = Moves({id: 1, type: 'chip', cell: 1}, dskWI);
     chai.assert(moves.length === 3, `length: ${moves.length}`);
   })
+
+  it('should not allow move ships to corners', ()=> {
+    const ship = {id: 0, type: 'ship', owner: 0, cell: 1};
+    const moves = Moves(ship, dsk, ship);
+    chai.assert(!_.find(moves, {to: 0}), 'allow ship move to corner');
+    const chip = {id: 1, type: 'chip', owner: 0, cell: 1};
+    const chipMoves = Moves(chip, dsk, ship);
+    const move = _.find(chipMoves, {to: 0});
+    chai.assert(move, 'not allow chip move to corner');
+  })
 })

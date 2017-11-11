@@ -35,7 +35,7 @@ export default class Game {
   // тотопить монеты, съедать акулой
   wreck(chip, id) {
     const here = _.includes(this.chipIds, id);
-    const coinToSink = !this.toCell.safe_for_coin && chip.type === 'coin';
+    const coinToSink = !this.toCell.safeForCoins && chip.type === 'coin';
     const onShark = this.toCell.type === 'shark';
     if (here && (coinToSink || onShark))
       return Object.assign({}, chip, {sinked: true});

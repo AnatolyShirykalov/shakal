@@ -4,6 +4,7 @@ import * as chai from 'chai'
 import Moves from '../src/core/Moves'
 import _ from 'lodash'
 import Arrow from '../src/core/Arrow'
+import {emptyAround, moveFirst} from './test_helpers'
 
 describe('reducers', () => {
   describe('game', () => {
@@ -211,7 +212,21 @@ describe('reducers', () => {
         const state = game(initialState, {type: 'MOVE', chipIds: [1], to: shark.id});
         chai.assert(state.chips[1].cell === shark.id);
         chai.assert(state.chips[1].sinked, 'not sinked');
-      })
+      });
+
+      it('should sink on nonSafe cells', () => {
+        const treasure = _.find(desk, {type: 'treasure'});
+        const newDesk = emptyAround(desk, treasure);
+        const s = Object.assign({}, initialState, {desk: newDesk});
+        const s1 = game(s, moveFirst(treasure.id));
+        const cell = _.find(s1.desk, {type: 'empty'}).id;
+        const water = _.find(s1.desk, {type: 'water'}).id;
+        const coin = _.find(s1.chips, {type: 'coin', cell: treasure.id}).id;
+        const se = game(s1, moveFirst(cell, coin));
+        chai.assert(!se.chips[coin].sinked, `coin has sinked`);
+        const sw = game(s1, moveFirst(water, coin));
+        chai.assert(sw.chips[coin].sinked, `coin has not sinked`);
+      });
 
     });
 

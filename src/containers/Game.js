@@ -6,10 +6,12 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import './game.css'
 import * as actions from '../actions'
+import rslts from '../core/results'
 
-const mapStateToProps = ({myPlayer, server, game: {desk, chips, player, results}}) => {
+const mapStateToProps = ({myPlayer, server, game: {desk, chips, player}}) => {
   if (server === 'new') return {server};
   if (server !== 'ok' && server !== 'pending') return {server, myPlayer};
+  const results = rslts(chips);
   const selected = _.filter(chips, {selected: true});
   const mustContinue = selected.length > 0 &&
     _.includes(['arrow', 'horse'], desk[selected[0].cell].type);
@@ -33,7 +35,7 @@ const mapStateToProps = ({myPlayer, server, game: {desk, chips, player, results}
               chip.type === 'coin' &&
               selected.length > 0 &&
               chip.cell === selected[0].cell &&
-              chip.level === selected.level &&
+              (desk[chip.cell].type !=='marsh' || chip.level === selected[0].level) &&
               (chip.selected || !sc)
             )
           )
