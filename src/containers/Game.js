@@ -7,17 +7,18 @@ import _ from 'lodash'
 import './game.css'
 import * as actions from '../actions'
 
-const mapStateToProps = ({server: {myPlayer, ok, pending}, game: {desk, chips, player, results}}) => {
-  if (typeof(myPlayer) !== 'number') return {};
-  if (!ok) return {player: myPlayer === 0 ? 0 : false};
+const mapStateToProps = ({myPlayer, server, game: {desk, chips, player, results}}) => {
+  if (server === 'new') return {server};
+  if (server !== 'ok' && server !== 'pending') return {server, myPlayer};
   const selected = _.filter(chips, {selected: true});
   const mustContinue = selected.length > 0 &&
     _.includes(['arrow', 'horse'], desk[selected[0].cell].type);
   const sc = _.find(selected, {type: 'coin'});
   const ship = _.find(chips, {owner: player, type: 'ship'});
   const moves = selected.length > 0 ? Moves(selected[0], desk, ship) : [];
+  const pending = server === 'pending'
   return {
-    selected, player, results, ok, myPlayer,
+    selected, player, results, server, myPlayer,
     desk: desk.map((cell, id) => {
       const achievable = !pending && !!_.find(moves, {to: id});
       if (!cell.opened) return {id, objects: [], achievable};
@@ -52,13 +53,15 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-const GameComponent = ({myPlayer, player, ok, selected, desk, results, mover, selector, initGame}) => {
-  if (!ok && typeof(player) !== 'number') return <div className="sorry">Чтобы начать игру, нужно открыть сию страницу в четырёх вкладках. После открытия четвёртой вкладки у первого открывшего появится волшебная кнопка. После нажатия кнопки сгенерируется поле и начнётся игра.</div>;
-  if (!ok) return (
-    <div className="push">
-      <button onClick={initGame} >Создать игру</button>
-    </div>
-  );
+const GameComponent = ({myPlayer, player, server, selected, desk, results, mover, selector, initGame}) => {
+  if (server === 'new') return <div className="sorry">Чтобы начать игру, нужно открыть сию страницу в четырёх вкладках. После открытия четвёртой вкладки у первого открывшего появится волшебная кнопка. После нажатия кнопки сгенерируется поле и начнётся игра.</div>;
+  if (server === 'noDesk')
+    if (myPlayer === 0) return (
+      <div className="push">
+        <button onClick={initGame} >Создать игру</button>
+      </div>
+    );
+    else return <div className="sorry">Ждём первого игрока. Он должен создать поле.</div>
   const extraChipProps = chip => {
     if (chip.selectable) return {onClick: (e) => {
       e.stopPropagation();
@@ -67,7 +70,7 @@ const GameComponent = ({myPlayer, player, ok, selected, desk, results, mover, se
     return {};
   }
   const extraCellProps = cell => {
-    if(!cell.achievable || selected.length === 0) return {};
+    if(!cell.achievable || selected.length === 0 || player !== myPlayer) return {};
     const lvl = selected[0].level;
     const extra = typeof(lvl)==='number' && cell.level ? {level: lvl+ 1} : {};
     return {onClick: () =>mover({to: cell.id, ...extra, chipIds: _.map(selected, 'id')})};

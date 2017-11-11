@@ -3,9 +3,16 @@
 }
 
 .shakal-bar .bar-player {
-  width: 50px;
+  display: inline-block;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 15px 0;
+  margin-right: 50px;
+  width: 80px;
   height: 50px;
   border-radius: 50%;
+  color: white;
+  font-weight: bold;
 }
 
 .shakal-bar .result {
