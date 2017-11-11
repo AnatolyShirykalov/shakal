@@ -65,8 +65,15 @@ export default class Game {
   // 2. Игрок вышибает другого
   activateBlock(cell, id, myChipsHere) {
     if (cell.type !== 'block' || cell.active === true) return cell;
-    const cond1 = (id === this.chips[this.chipIds[0]].cell && myChipsHere.length === this.chipIds.length);
-    const filter = chip=>chip.cell===id && chip.type !== 'coin' && chip.owner !== this.player;
+    const cond1 = (
+      id === this.chips[this.chipIds[0]].cell &&
+      myChipsHere.length === this.chipIds.length
+    );
+    const filter = chip => (
+      chip.cell===id &&
+      chip.type !== 'coin' &&
+      chip.owner !== this.player
+    );
     if (cond1 || (this.to === id && _.find(this.chips, filter)))
       return Object.assign({}, cell, {active: true});
     return cell;
@@ -80,8 +87,11 @@ export default class Game {
 
   // спасение заблокированной фишки (chip) путём прихода подмоги, но не вышибания
   deactivateBlock(cell, id, myChipsHere) {
-    if (id !== this.to || cell.type !== 'block' || (myChipsHere.length + 1) < cell.level)
-      return cell;
+    if (
+      id !== this.to ||
+      cell.type !== 'block' ||
+      (myChipsHere.length + 1) < cell.level
+    ) return cell;
     return Object.assign({}, cell, {active: false});
   }
 
@@ -90,9 +100,16 @@ export default class Game {
   }
 
   newCell(cell, id) {
-    const filter = chip => chip.cell === id && chip.owner == this.player;
+    const filter = chip => (
+      chip.cell === id &&
+      chip.owner == this.player &&
+      chip.type !== 'coin'
+    );
     const myChipsHere = _.filter(this.chips, filter);
-    return this.newCellMethods().reduce((c, m) => this[m](c, id, myChipsHere), _.cloneDeep(cell));
+    return this.newCellMethods().reduce(
+      (c, m) => this[m](c, id, myChipsHere),
+      _.cloneDeep(cell)
+    );
   }
 
   newDesk() {
@@ -104,9 +121,14 @@ export default class Game {
   }
 
   newResults() {
-    if (this.toCell.type === 'water' && this.chips[this.player * 4].cell === this.to) {
-      return Object.assign({}, this.results, {[this.player]: this.results[this.player]+1});
-    }
+    if (
+      this.toCell.type === 'water' &&
+      this.chips[this.player * 4].cell === this.to
+    ) return Object.assign(
+      {},
+      this.results,
+      {[this.player]: this.results[this.player]+1}
+    );
     return this.results;
   }
 
@@ -126,9 +148,7 @@ export default class Game {
       const chip = this.chips[_.find(this.chipIds, id=>this.chips[id].type !== 'coin')];
       return new Game(ret, {chipIds: this.chipIds, to: this.getHome(chip)}).newState();
     }
-    if (this.toCell.type === 'horse') {
-      return ret;
-    }
+    if (this.toCell.type === 'horse') return ret;
     if (this.toCell.type === 'vortex') {
       const to = 2 * this.to - this.chips[this.chipIds[0]].cell;
       return new Game(ret, {chipIds: this.chipIds, to}).newState();
