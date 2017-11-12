@@ -11,5 +11,5 @@ yarn start
 
 # Собираем
 ```bash
-NODE_ENV=production ./node_mobules/.bin/webpack
+NODE_ENV=production ./node_modules/.bin/webpack
 ```
