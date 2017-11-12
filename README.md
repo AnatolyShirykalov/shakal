@@ -8,3 +8,8 @@ yarn install
 yarn server
 yarn start
 ```
+
+# Собираем
+```bash
+NODE_ENV=production ./node_mobules/.bin/webpack
+```
