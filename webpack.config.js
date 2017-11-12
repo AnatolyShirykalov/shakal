@@ -8,7 +8,10 @@ var production = process.env.NODE_ENV === 'production';
 
 var plugins = [
   new webpack.NamedModulesPlugin(),
-  new webpack.HotModuleReplacementPlugin()
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.DefinePlugin({ // <--key to reduce React's size
+    'process.env': { NODE_ENV: JSON.stringify('development') }
+  })
 ];
 
 if (production) {
