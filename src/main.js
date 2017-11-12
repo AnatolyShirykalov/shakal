@@ -9,7 +9,7 @@ import * as actions from './actions'
 import { AppContainer } from 'react-hot-loader'
 import createSocketIoMiddleware from 'redux-socket.io';
 import io from 'socket.io-client';
-//const socket = io('http://localhost:1359');
+//const socket = io('http://192.168.1.32:1359');
 const socket = io();
 const socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
 

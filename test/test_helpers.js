@@ -1,8 +1,8 @@
 import _ from 'lodash'
 
-export const emptyAround = (desk, treasure) => {
+export const emptyAround = (desk, pup) => {
   return _.map(desk, cell => {
-    if ( _.includes(['water', 'treasure'], cell.type)) return cell;
+    if ( _.includes(['water', pup.type], cell.type)) return cell;
     return {id: cell.id, type: 'empty', safeForCoins: true};
   });
 }

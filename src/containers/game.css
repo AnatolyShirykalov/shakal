@@ -1,3 +1,27 @@
+.sorry {
+  font-family: Comic Sans MS;
+  margin-top: 20ex;
+  padding: 0 5em;
+  font-size: 20pt;
+  border: 3px solid green;
+  border-radius: 50pt;
+}
+
+.push {
+  margin-top: 20ex;
+  text-align: center;
+}
+
+.push button {
+  font-size: 20pt;
+  font-family: Comic Sans MS;
+  background: green;
+  color: white;
+  border: 4px solid lightgreen;
+  padding: 3ex;
+  border-radius: 6ex;
+}
+
 .desk {
   width: 754px;
 }

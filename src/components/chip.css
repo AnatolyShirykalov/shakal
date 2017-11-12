@@ -31,3 +31,13 @@
 .chip.sinked {
   display: none;
 }
+
+.chip.type-friday.owner-0 {background: linear-gradient(45deg, red, black 50%);}
+.chip.type-friday.owner-1 {background: linear-gradient(45deg, blue 50%, black 50%);}
+.chip.type-friday.owner-2 {background: linear-gradient(45deg, green 50%, black 50%);}
+.chip.type-friday.owner-3 {background: linear-gradient(45deg, violet 50%, black 50%);}
+
+.chip.type-donkey.owner-0 {background: linear-gradient(135deg, red 33%, black 33%, black 66%, red 66%);}
+.chip.type-donkey.owner-1 {background: linear-gradient(135deg, blue 33%, black 33%, black 66%, blue 66%);}
+.chip.type-donkey.owner-2 {background: linear-gradient(135deg, green 33%, black 33%, black 66%, green 66%);}
+.chip.type-donkey.owner-3 {background: linear-gradient(135deg, voilet 33%, black 33%, black 66%, violet 66%);}
