@@ -82,7 +82,7 @@ describe('core', () => {
     it('should init new valid game', () => {
       _.times(20, ()=> {
         const game = initGame();
-        chai.assert(Object.keys(game).length === 4);
+        chai.assert(Object.keys(game).length === 3);
         chai.assert(deskValidator(game.desk));
       });
     });

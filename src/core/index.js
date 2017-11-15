@@ -94,7 +94,7 @@ export const initGame = () => {
   //const opened = dsk.map(cell => {
     //return Object.assign({}, cell, {opened: true});
   //})
-  return { desk: dsk, chips: chips(dsk), player: 0, results: {[0]: 0, [1]: 0, [2]: 0, [3]: 0}}
+  return { desk: dsk, chips: chips(dsk), player: 0}
   //return { desk: opened, chips: chips(dsk), player: 0 }
 }
 

@@ -5,7 +5,6 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { Provider } from 'react-redux'
 import Game from './containers/Game'
 import reducer from './reducer'
-import * as actions from './actions'
 import { AppContainer } from 'react-hot-loader'
 import createSocketIoMiddleware from 'redux-socket.io';
 import io from 'socket.io-client';

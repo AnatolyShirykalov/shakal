@@ -4,7 +4,7 @@ import Star from './Star'
 
 export default class Game {
   constructor(state, action) {
-    ['player', 'chips', 'desk', 'results'].forEach(k=>this[k]=state[k]);
+    ['player', 'chips', 'desk'].forEach(k=>this[k]=state[k]);
     ['to', 'chipIds', 'level'].forEach(k=>this[k]=action[k]);
     this.toCell = _.find(this.desk, ['id', this.to]);
     if (this.toCell.type === 'marsh' && this.chips[this.chipIds[0]].cell !== this.to) this.level = 1;
@@ -120,25 +120,11 @@ export default class Game {
     return (this.player + 1)%4;
   }
 
-  newResults() {
-    if (
-      this.toCell.type === 'water' &&
-      this.chips[this.player * 4].cell === this.to
-    ) return Object.assign(
-      {},
-      this.results,
-      {[this.player]: this.results[this.player]+1}
-    );
-    return this.results;
-  }
-
-
   newState() {
     const ret = {
       chips: this.newChips(),
       desk: this.newDesk(),
       player: this.player,
-      results: this.newResults(),
     };
     if (this.toCell.type === 'star' ) {
       const argTo = new Star(this.toCell).mustMoveTo();
