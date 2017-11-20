@@ -16,6 +16,6 @@ export const move = (args) => {
   }
 }
 
-export const initGAME = () => {
-  return {type: 'server/initGame', game: initGame()}
+export const initGAME = (game) => {
+  return {type: 'server/initGame', game}
 }

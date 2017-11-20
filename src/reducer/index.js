@@ -28,7 +28,17 @@ export const game = (state = defaultState, action) => {
 
 
 const myPlayer = (state = null, action) => {
+  if (action.type === 'JOIN' && action.you === 'true') {
+    if (action.watcher === 'true') return 'watcher';
+    return parseInt(action.index);
+  }
   if (action.type === 'SET_PLAYER') return action.data;
+  return state;
+}
+
+const connectedPlayers = (state = 0, action) => {
+  if (action.type === 'JOIN') return state++;
+  if (action.type === 'DISCONNECT') return state--;
   return state;
 }
 
@@ -40,6 +50,6 @@ const server = (state = 'new', action) => {
   return state;
 }
 
-const reducer = combineReducers({game, server, myPlayer});
+const reducer = combineReducers({game, server, myPlayer, connectedPlayers});
 export default reducer;
 

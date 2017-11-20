@@ -8,12 +8,19 @@ import reducer from './reducer'
 import { AppContainer } from 'react-hot-loader'
 import createSocketIoMiddleware from 'redux-socket.io';
 import io from 'socket.io-client';
+import queryString from 'query-string'
 
 const socket =
   process.env.NODE_ENV === 'production' ?
   io() :
-  io('http://192.168.1.32:1359');
+  io('http://0.0.0.0:12312');
+
+const query = queryString.parse(window.location.search);
+const playerId = query['player'];
+const gameId = query['game'];
+
 const socketIoMiddleware = createSocketIoMiddleware(socket, "server/");
+
 
 const store = createStore(
   reducer,
@@ -21,6 +28,7 @@ const store = createStore(
   //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
+window.socket = socket;
 
 const r = () => {
   render(
@@ -30,10 +38,13 @@ const r = () => {
       </Provider>
     </AppContainer>,
     document.getElementById('root')
-  )
+  );
 }
 
 r();
 
 if (module.hot) module.hot.accept('./containers/Game', r);
 
+setTimeout(
+  ()=>store.dispatch({type: 'server/JOIN', playerId, gameId}),
+  2000);

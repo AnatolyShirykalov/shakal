@@ -7,6 +7,7 @@ import _ from 'lodash'
 import './game.css'
 import * as actions from '../actions'
 import rslts from '../core/results'
+import Sync from '../components/Sync'
 
 const mapStateToProps = ({myPlayer, server, game: {desk, chips, player}}) => {
   if (server === 'new') return {server};
@@ -20,7 +21,7 @@ const mapStateToProps = ({myPlayer, server, game: {desk, chips, player}}) => {
   const moves = selected.length > 0 ? Moves(selected[0], desk, ship) : [];
   const pending = server === 'pending'
   return {
-    selected, player, results, server, myPlayer,
+    selected, player, results, server, myPlayer, game: {desk, chips, player},
     desk: desk.map((cell, id) => {
       const achievable = !pending && !!_.find(moves, {to: id});
       if (!cell.opened) return {id, objects: [], achievable};
@@ -50,17 +51,17 @@ const mapDispatchToProps = dispatch => {
   return {
     selector: id => dispatch({type: 'server/SELECT', id}),
     mover: move => dispatch(Object.assign({}, move, {type: 'server/MOVE'})),
-    initGame: () => dispatch(actions.initGAME())
+    initGame: game => ()=> dispatch(actions.initGAME(game))
   }
 }
 
 
-const GameComponent = ({myPlayer, player, server, selected, desk, results, mover, selector, initGame}) => {
+const GameComponent = ({game, myPlayer, player, server, selected, desk, results, mover, selector, initGame}) => {
   if (server === 'new') return <div className="sorry">Чтобы начать игру, нужно открыть сию страницу в четырёх вкладках. После открытия четвёртой вкладки у первого открывшего появится волшебная кнопка. После нажатия кнопки сгенерируется поле и начнётся игра.</div>;
   if (server === 'noDesk')
     if (myPlayer === 0) return (
       <div className="push">
-        <button onClick={initGame} >Создать игру</button>
+        <button onClick={initGame(game)} >Создать игру</button>
       </div>
     );
     else return <div className="sorry">Ждём первого игрока. Он должен создать поле.</div>
@@ -82,6 +83,7 @@ const GameComponent = ({myPlayer, player, server, selected, desk, results, mover
       <div className="shakal-bar">
         <div className={`bar-player player-${player}`} >Текущий</div>
         <div className={`bar-player my-player player-${myPlayer}`} >Вы</div>
+        <Sync {...{sendGame: initGame(game), myPlayer}}/>
         <div className="results">
           {_.map(results, (result, pl) => {
             return (
