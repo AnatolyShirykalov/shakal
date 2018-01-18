@@ -35,7 +35,7 @@ const server = (state = 'new', action) => {
   if (action.type === 'server/page') return 'new';
   if (action.type.match(/^server/)) return 'pending';
   if (action.type === 'SET_PLAYER') return 'noDesk';
-  if (action.type === 'initGame') return 'ok';
+  if (action.type === 'initGame' || action.type === 'SELECT' || action.type === 'MOVE') return 'ok';
   return state;
 }
 

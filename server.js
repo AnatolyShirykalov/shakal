@@ -12,16 +12,23 @@ function clients(page) {
 }
 io.on('connection', function(socket){
   console.log("Socket connected: " + socket.id, clients());
+
   socket.on('page', function(page) {
     socket.join(page);
+
     console.log('in room', page, 'there are', clients(page));
+
     socket.on('action', (action) => {
-      //io.to(page).emit('action', Object.assign({}, action, {type: action.type.replace('server/', '')} ));
       clients(page).forEach((client, id) => {
+
         console.log('send to', client);
-        io.sockets.connected[client].emit('action', Object.assign({}, action, {type: action.type.replace('server/', '')}));
+
+        io.sockets.connected[client].emit('action',
+          {...action, type: action.type.replace('server/', '')}
+        );
       })
     });
+
     if (clients(page).length === 4) {
       clients(page).forEach( (client, id) => {
         io.sockets.connected[client].emit('action', {type: 'SET_PLAYER', data: id});

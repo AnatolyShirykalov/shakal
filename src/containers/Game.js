@@ -60,6 +60,9 @@ const GameComponent = ({myPlayer, player, server, selected, desk, results, mover
       <button onClick={initGame} >Создать игру</button>
     </div>
   );
+  if (server === 'noDesk' || server === 'pending') return (
+    <div>Терпим</div>
+  );
   const extraChipProps = chip => {
     if (chip.selectable) return {onClick: (e) => {
       e.stopPropagation();
